@@ -35,7 +35,7 @@ function createDataField(line) {
     const { main: commentStrippedLine, comment} = stripComment(line);
     const [domain, publisherAccountID, accountType, certificateAuthorityID] = commentStrippedLine
         .split(",")
-        .map(item => decodeURIComponent(item.trim()));
+        .map(item => unescape(item.trim()));
     const output = {
         domain,
         publisherAccountID,
@@ -159,12 +159,12 @@ function parseAdsTxt(text, parseOptions = {}) {
             if (typeof variables[variableName] === "string") {
                 variables[variableName] = [
                     variables[variableName],
-                    decodeURIComponent(value)
+                    unescape(value)
                 ];
             } else if (Array.isArray(variables[variableName])) {
-                variables[variableName].push(decodeURIComponent(value));
+                variables[variableName].push(unescape(value));
             } else {
-                variables[variableName] = decodeURIComponent(value);
+                variables[variableName] = unescape(value);
             }
         } else if (isDataField(line)) {
             dataFields.push(createDataField(line));
